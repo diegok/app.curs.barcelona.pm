@@ -1,0 +1,4 @@
+<div class="box edit-user">
+<h2>Nuevo usuario</h2>
+[% form.render -%]
+</div>

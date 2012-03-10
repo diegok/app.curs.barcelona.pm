@@ -1,0 +1,33 @@
+<div class="box">
+<h2>Usuarios 
+<a href="[% c.uri_for('/admin/user/create') %]" class="create" title="Añadir usuario">Añadir</a>
+</h2>
+<h3>
+    <ul>
+        <li>
+            <span class="name">Nombre</span>
+            <span class="email">Email</span>
+            <span class="role">Roles</span>
+        </li>
+    </ul>
+</h3>
+<ul class="user">
+[% FOREACH user IN users -%]
+<li>
+    <span class="name">[% user.name %]</span>
+    <span class="email">[% user.email %]</span>
+    <span class="role">
+        [%- FOREACH role IN user.roles -%]
+            [%- role.name -%]
+            [%- UNLESS loop.last %], [% END -%]
+        [%- END -%]
+    </span>
+    <span class="controls">
+        <a href="[% c.uri_for('/admin/user', user.id, 'edit') %]" class="edit">Editar</a>
+        <a href="[% c.uri_for('/admin/user', user.id, 'delete') %]" title="Borrar" class="delete">Borrar</a>
+    </span>
+</li>
+[% END -%]
+</ul>
+[% INCLUDE element/pager.tt -%]
+</div>

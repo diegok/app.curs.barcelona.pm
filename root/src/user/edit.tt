@@ -1,0 +1,4 @@
+<div class="box edit-user">
+<h2>Editando usuario: [% user.name %]</h2>
+[% form.render -%]
+</div>

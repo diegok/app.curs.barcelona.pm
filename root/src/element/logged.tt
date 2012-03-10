@@ -1,0 +1,7 @@
+<div id="header"><div>
+  <ul>
+    <li><a href="[% c.uri_for('/') %]">Home</a></li>
+    <li><a href="[% c.uri_for('/users') %]">Usuarios</a></li>
+    <li class="logout"><a href="[% c.uri_for('/logout') %]">Logout</a></li>
+  </ul>
+</div></div>

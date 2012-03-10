@@ -28,9 +28,21 @@ The root page (/)
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
+    my $message = $c->user_exists
+        ? 'Hola '. $c->user->name .'!'
+        : 'Hola mundo!';
+    $c->stash(
+        message  => $message,
+        template => 'index.tt'
+    );
+}
 
-    # Hello World
-    $c->response->body( $c->welcome_message );
+sub status :Path('/status') :Args(0) {
+    my ( $self, $c ) = @_;
+    $c->stash(
+        json => { value => 'testing' }
+    );
+    $c->forward('View::JSON');
 }
 
 =head2 default

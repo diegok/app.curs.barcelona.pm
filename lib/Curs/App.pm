@@ -17,9 +17,16 @@ use Catalyst::Runtime 5.80;
 #                 directory
 
 use Catalyst qw/
-    -Debug
     ConfigLoader
     Static::Simple
+    Unicode::Encoding
+
+    Session
+    Session::State::Cookie
+    Session::Store::File
+
+    Authentication
+    Authorization::Roles
 /;
 
 extends 'Catalyst';
@@ -40,11 +47,40 @@ __PACKAGE__->config(
     # Disable deprecated behavior needed by old applications
     disable_component_resolution_regex_fallback => 1,
     enable_catalyst_header => 1, # Send X-Catalyst header
+    encoding    => 'UTF-8',
+    'View::Web' => {
+        INCLUDE_PATH => [
+            __PACKAGE__->path_to( 'root', 'src' ),
+            __PACKAGE__->path_to( 'root', 'lib' ),
+        ],
+    },
+    'View::JSON' => {
+        expose_stash => 'json', # defaults to everything
+    },
+    default_view => 'Web',
+    'Plugin::Authentication' => {
+        default_realm => 'users',
+        realms        => {
+            users => {
+                credential => {
+                    class          => 'Password',
+                    password_field => 'password',
+                    password_type  => 'self_check',
+                },
+                store => {
+                    class      => 'DBIx::Class',
+                    user_model => 'DB::User',
+                    role_relation => 'roles',
+                    role_field => 'name',
+                    id_field   => 'email'
+                }
+            }
+        }
+    },
 );
 
 # Start the application
 __PACKAGE__->setup();
-
 
 =head1 NAME
 
